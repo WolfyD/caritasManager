@@ -36,7 +36,6 @@
 			this.btn_Exit = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.dg_DataTable = new System.Windows.Forms.DataGridView();
-			this.tt_Info = new System.Windows.Forms.ToolTip(this.components);
 			this.ch_CustomerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ch_jovedelemig = new System.Windows.Forms.DataGridViewImageColumn();
 			this.ch_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,6 +45,8 @@
 			this.ch_LastSupport = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ch_AddSupport = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.button1 = new System.Windows.Forms.Button();
+			this.tt_Tooltip = new CaritasManager.uc_Tooltip();
+			this.t_Timer = new System.Windows.Forms.Timer(this.components);
 			this.ts_Tools.SuspendLayout();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dg_DataTable)).BeginInit();
@@ -120,12 +121,15 @@
             this.ch_LastSupport,
             this.ch_AddSupport});
 			this.dg_DataTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dg_DataTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
 			this.dg_DataTable.Location = new System.Drawing.Point(0, 50);
 			this.dg_DataTable.Name = "dg_DataTable";
 			this.dg_DataTable.ReadOnly = true;
+			this.dg_DataTable.RowHeadersVisible = false;
 			this.dg_DataTable.Size = new System.Drawing.Size(930, 352);
 			this.dg_DataTable.TabIndex = 2;
 			this.dg_DataTable.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellMouseEnter);
+			this.dg_DataTable.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_DataTable_CellMouseLeave);
 			// 
 			// ch_CustomerName
 			// 
@@ -189,11 +193,27 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
+			// tt_Tooltip
+			// 
+			this.tt_Tooltip.BackColor = System.Drawing.Color.LightYellow;
+			this.tt_Tooltip.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tt_Tooltip.font = null;
+			this.tt_Tooltip.Location = new System.Drawing.Point(-100, -100);
+			this.tt_Tooltip.Name = "tt_Tooltip";
+			this.tt_Tooltip.Size = new System.Drawing.Size(10, 10);
+			this.tt_Tooltip.TabIndex = 3;
+			this.tt_Tooltip.text = null;
+			// 
+			// t_Timer
+			// 
+			this.t_Timer.Tick += new System.EventHandler(this.t_Timer_Tick);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(930, 499);
+			this.Controls.Add(this.tt_Tooltip);
 			this.Controls.Add(this.dg_DataTable);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.ts_Tools);
@@ -215,7 +235,6 @@
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.ToolStripButton toolStripButton1;
 		private System.Windows.Forms.DataGridView dg_DataTable;
-		private System.Windows.Forms.ToolTip tt_Info;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ch_CustomerName;
 		private System.Windows.Forms.DataGridViewImageColumn ch_jovedelemig;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ch_ID;
@@ -225,6 +244,8 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn ch_LastSupport;
 		private System.Windows.Forms.DataGridViewButtonColumn ch_AddSupport;
 		private System.Windows.Forms.Button button1;
+		private uc_Tooltip tt_Tooltip;
+		private System.Windows.Forms.Timer t_Timer;
 	}
 }
 

@@ -15,6 +15,9 @@ namespace CaritasManager
 	public partial class Form1 : Form
 	{
 		public SQLiteConnection sqlc = null;
+		public bool showKin = false;
+		DataGridViewCellEventArgs showKinArgs = null;
+		int showKinCheck = 0;
 
 		public Form1()
 		{
@@ -28,7 +31,7 @@ namespace CaritasManager
 		{
 
 		}
-		
+
 
 		public void TEST()
 		{
@@ -42,29 +45,74 @@ namespace CaritasManager
 
 		}
 
+
+		private void dg_DataTable_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+		{
+			showKin = false;
+			t_Timer.Stop();
+			tt_Tooltip.hide();
+		}
+
 		private void dataGridView1_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
 		{
-			if(e.ColumnIndex == 0)
+			if (e.ColumnIndex == 0)
 			{
 				try
 				{
-					List<string> k = dg_DataTable[e.ColumnIndex, e.RowIndex].Tag as List<string>;
-					string kin = "";
-
-					foreach(string s in k)
-					{
-						kin += (s.Split(':')[0] + " - ").PadRight(12, ' ');
-						kin += s.Split(':')[1] + "\r\n";
-					}
-
-					tt_Info.Show(kin, this, new Point(100, 100));
+					showKin = true;
+					showKinArgs = e;
+					showKinCheck = 0;
+					t_Timer.Start();
 				}
 				catch
 				{
 
 				}
 			}
+			else
+			{
+				showKin = false;
+				t_Timer.Stop();
+				tt_Tooltip.hide();
+			}
 			//
+		}
+
+		private void ShowKin(DataGridViewCellEventArgs e)
+		{
+			List<string> k = dg_DataTable[e.ColumnIndex, e.RowIndex].Tag as List<string>;
+			string kin = "";
+
+			foreach (string s in k)
+			{
+				kin += (s.Split(':')[0] + " - ").PadRight(12, ' ');
+				kin += s.Split(':')[1] + "\r\n";
+			}
+
+			kin = kin.Trim();
+
+			if (kin.Length > 3)
+			{
+				Point p = PointToClient(Cursor.Position);
+
+				int rowTop = 0;
+				int colRight = dg_DataTable[e.ColumnIndex, e.RowIndex].Size.Width;
+
+				rowTop += ts_Tools.Height;
+				rowTop += dg_DataTable.ColumnHeadersHeight;
+				for(int i = 0; i < e.RowIndex; i++) { rowTop += dg_DataTable[0, i].Size.Height; }
+
+
+				//rowTop += e.RowIndex * (dg_DataTable[e.RowIndex, e.ColumnIndex].Size.Height);
+
+				tt_Tooltip.font = new Font("Consolas", 14, FontStyle.Regular);
+				tt_Tooltip.text = kin;
+				tt_Tooltip.show(new Point(colRight, rowTop));
+			}
+			else
+			{
+				tt_Tooltip.hide();
+			}
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -74,22 +122,43 @@ namespace CaritasManager
 			int I = 0;
 
 			Bitmap img = new Bitmap(22, 22);
-			using(Graphics g = Graphics.FromImage(img))
+			using (Graphics g = Graphics.FromImage(img))
 			{
 				g.Clear(Color.White);
 				g.DrawString("✓", this.Font, Brushes.Green, new Point(3, 3));
 			}
 
-			foreach(c_MainDataRow mdr in lst)
+			foreach (c_MainDataRow mdr in lst)
 			{
-				dg_DataTable.Rows.Insert(I, new object[] { mdr.name + (mdr.kin.Count > 0 ? "(" + mdr.kin.Count + ")" : ""), mdr.j == true ? img : null, mdr.identification, mdr.city, mdr.state, mdr.dateAdded, mdr.lastSupport, "Támogatás" });
+				DateTime n = DateTime.Now;
+				int lasts = (int)Math.Floor((new DateTime(n.Year, n.Month, n.Day) - mdr.lastSupport).TotalDays);
+
+
+				dg_DataTable.Rows.Insert(I, new object[] { mdr.name + (mdr.kin.Count > 0 ? "  (" + (mdr.kin.Count + 1) + ")" : ""), mdr.j == true ? img : null, mdr.identification, mdr.city, mdr.state, mdr.dateAdded, mdr.lastSupport, "Támogatás" });
 				dg_DataTable.Rows[I].Cells[0].Tag = mdr.kin;
 
-				
+				Color c = lasts <= 28 ? Color.LightGreen : (lasts <= 365 ? Color.Orange : Color.LightPink);
+
+				dg_DataTable.Rows[I].DefaultCellStyle.BackColor = c;
 
 				I++;
 			}
 
+		}
+
+		private void t_Timer_Tick(object sender, EventArgs e)
+		{
+			if (showKinCheck >= 8)
+			{
+				if (showKin == true)
+				{
+					t_Timer.Stop();
+					ShowKin(showKinArgs);
+				}
+				showKinCheck = 0;
+			}
+
+			showKinCheck++;
 		}
 	}
 }

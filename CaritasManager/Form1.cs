@@ -80,38 +80,47 @@ namespace CaritasManager
 
 		private void ShowKin(DataGridViewCellEventArgs e)
 		{
-			List<string> k = dg_DataTable[e.ColumnIndex, e.RowIndex].Tag as List<string>;
-			string kin = "";
-
-			foreach (string s in k)
+			try
 			{
-				kin += (s.Split(':')[0] + " - ").PadRight(12, ' ');
-				kin += s.Split(':')[1] + "\r\n";
+				if(e.RowIndex > -1)
+				{
+					List<string> k = dg_DataTable[e.ColumnIndex, e.RowIndex].Tag as List<string>;
+					string kin = "";
+
+					foreach (string s in k)
+					{
+						kin += (s.Split(':')[0] + " - ").PadRight(12, ' ');
+						kin += s.Split(':')[1] + "\r\n";
+					}
+
+					kin = kin.Trim();
+
+					if (kin.Length > 3)
+					{
+						Point p = PointToClient(Cursor.Position);
+
+						int rowTop = 0;
+						int colRight = dg_DataTable[e.ColumnIndex, e.RowIndex].Size.Width;
+
+						rowTop += ts_Tools.Height;
+						rowTop += dg_DataTable.ColumnHeadersHeight;
+						for (int i = 0; i < e.RowIndex; i++) { rowTop += dg_DataTable[0, i].Size.Height; }
+						rowTop -= dg_DataTable.VerticalScrollingOffset;
+
+						tt_Tooltip.font = new Font("Consolas", 14, FontStyle.Regular);
+						tt_Tooltip.text = kin;
+						tt_Tooltip.title = "Háztartásban élők";
+						tt_Tooltip.show(new Point(colRight, rowTop));
+					}
+					else
+					{
+						tt_Tooltip.hide();
+					}
+				}
 			}
-
-			kin = kin.Trim();
-
-			if (kin.Length > 3)
+			catch(Exception ex)
 			{
-				Point p = PointToClient(Cursor.Position);
-
-				int rowTop = 0;
-				int colRight = dg_DataTable[e.ColumnIndex, e.RowIndex].Size.Width;
-
-				rowTop += ts_Tools.Height;
-				rowTop += dg_DataTable.ColumnHeadersHeight;
-				for(int i = 0; i < e.RowIndex; i++) { rowTop += dg_DataTable[0, i].Size.Height; }
-
-
-				//rowTop += e.RowIndex * (dg_DataTable[e.RowIndex, e.ColumnIndex].Size.Height);
-
-				tt_Tooltip.font = new Font("Consolas", 14, FontStyle.Regular);
-				tt_Tooltip.text = kin;
-				tt_Tooltip.show(new Point(colRight, rowTop));
-			}
-			else
-			{
-				tt_Tooltip.hide();
+				Console.WriteLine(ex);
 			}
 		}
 

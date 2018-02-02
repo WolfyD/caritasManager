@@ -28,17 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.lbl_Text = new System.Windows.Forms.Label();
 			this.SuspendLayout();
-			// 
-			// lbl_Text
-			// 
-			this.lbl_Text.AutoSize = true;
-			this.lbl_Text.Location = new System.Drawing.Point(15, 9);
-			this.lbl_Text.Name = "lbl_Text";
-			this.lbl_Text.Size = new System.Drawing.Size(35, 13);
-			this.lbl_Text.TabIndex = 0;
-			this.lbl_Text.Text = "label1";
 			// 
 			// uc_Tooltip
 			// 
@@ -46,16 +36,13 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.LightYellow;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.Controls.Add(this.lbl_Text);
+			this.DoubleBuffered = true;
 			this.Name = "uc_Tooltip";
 			this.Size = new System.Drawing.Size(194, 86);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.Label lbl_Text;
 	}
 }

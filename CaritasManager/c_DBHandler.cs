@@ -47,7 +47,10 @@ namespace CaritasManager
 																"szakkepzettseg TEXT, " +
 																"munkaltato TEXT, " +
 																"hozzaadas_datuma TEXT, " + 
-																"azonosito TEXT" + 
+																"azonosito TEXT, " + 
+																"utolso_tamogatas_idopontja TEXT, " + 
+																"jovedelem_igazolas TEXT, " +
+																"allapot TEXT" + 
 															")", sqlc);
 			sqlk.Connection = sqlc;
 			sqlk.ExecuteNonQuery();
@@ -123,7 +126,9 @@ namespace CaritasManager
 										string lakcim_varos, string lakcim_uh, string szul_datum, 
 										string szul_hely, int csaladi_allapot, string anyja_neve, 
 										string vegzettseg, string foglalkozas, string szakkepzettseg, 
-										string munkaltato, string hozzaadas_datuma, string azonosito)
+										string munkaltato, string hozzaadas_datuma, string azonosito, 
+										string utolso_tamogatas_idopontja, string jovedelem_igazolas, 
+										string allapot)
 		{
 
 			string command = string.Format(
@@ -143,7 +148,10 @@ namespace CaritasManager
 													"szakkepzettseg, " +
 													"munkaltato, " +
 													"hozzaadas_datuma, " +
-													"azonosito" +
+													"azonosito," +
+													"utolso_tamogatas_idopontja, " +
+													"jovedelem_igazolas, " + 
+													"allapot" + 
 												") VALUES (" +
 													"'{0}', " +
 													"'{1}', " +
@@ -159,7 +167,10 @@ namespace CaritasManager
 													"'{11}', " +
 													"'{12}', " +
 													"'{13}', " +
-													"'{14}' " +
+													"'{14}', " +
+													"'{15}', " +
+													"'{16}', " + 
+													"'{17}'" + 
 												")", 
 													nev, 
 													születesi_nev, 
@@ -175,7 +186,10 @@ namespace CaritasManager
 													szakkepzettseg, 
 													munkaltato, 
 													hozzaadas_datuma, 
-													azonosito
+													azonosito,
+													utolso_tamogatas_idopontja,
+													jovedelem_igazolas,
+													allapot
 										);
 
 			SQLiteCommand sqlk = new SQLiteCommand(command, sqlc);
@@ -384,6 +398,59 @@ namespace CaritasManager
 
 			SQLiteCommand sqlk = new SQLiteCommand(command, sqlc);
 			sqlk.ExecuteNonQuery();
+		}
+
+		public static string checkDate(string date)
+		{
+			try
+			{
+				DateTime d = Convert.ToDateTime(date);
+				return date;
+			}
+			catch
+			{
+				//TODO: helyes dátum létrehozása
+				return DateTime.Now.ToShortDateString();
+			}
+		}
+
+		public static List<c_MainDataRow> getMainRowData(SQLiteConnection sqlc)
+		{
+			List<c_MainDataRow> lst = new List<c_MainDataRow>();
+
+			string main_command = "SELECT id,nev,jovedelem_igazolas,azonosito,lakcim_varos,lakcim_uh,allapot,hozzaadas_datuma,utolso_tamogatas_idopontja FROM ugyfel";
+
+			SQLiteCommand sqlk = new SQLiteCommand(main_command, sqlc);
+
+			SQLiteDataReader r = sqlk.ExecuteReader();
+
+			while (r.Read())
+			{
+				c_MainDataRow mdr = new c_MainDataRow();
+				mdr.id = r.GetInt32(r.GetOrdinal("id"));
+				mdr.name = r.GetString(r.GetOrdinal("nev"));
+				mdr.j = (r.GetString(r.GetOrdinal("jovedelem_igazolas")) == "T" ? true : false);
+				mdr.identification = r.GetString(r.GetOrdinal("azonosito"));
+				mdr.city = r.GetString(r.GetOrdinal("lakcim_varos"));
+				mdr.houseno = r.GetString(r.GetOrdinal("lakcim_uh"));
+				mdr.state = r.GetString(r.GetOrdinal("allapot"));
+				mdr.dateAdded = Convert.ToDateTime(checkDate(r.GetString(r.GetOrdinal("hozzaadas_datuma"))));
+				mdr.lastSupport = Convert.ToDateTime(checkDate(r.GetString(r.GetOrdinal("utolso_tamogatas_idopontja"))));
+				mdr.kin = new List<string>();
+
+				string kin_command = "SELECT * FROM haztartasban_elok WHERE ugyfel_id=" + mdr.id;
+				SQLiteCommand sqlk2 = new SQLiteCommand(kin_command, sqlc);
+				SQLiteDataReader rr = sqlk2.ExecuteReader();
+				while (rr.Read())
+				{
+					mdr.kin.Add(rr.GetString(rr.GetOrdinal("rokoni_kapcsolat")) + ":" + rr.GetString(rr.GetOrdinal("nev")));
+				}
+
+				lst.Add(mdr);
+			}
+
+
+			return lst;
 		}
 
 	#endregion

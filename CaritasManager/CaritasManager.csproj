@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="c_DBHandler.cs" />
+    <Compile Include="c_MainDataRow.cs" />
     <Compile Include="c_test.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

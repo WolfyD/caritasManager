@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Data.SQLite;
+using System.IO;
 
 namespace CaritasManager
 {
@@ -29,9 +30,18 @@ namespace CaritasManager
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-
+			createIdFile();
 		}
 
+		public void createIdFile()
+		{
+			if (!File.Exists("last_id.ini"))
+			{
+				File.Create("last_id.ini").Close();
+
+				//TODO: Warn that file changed
+			}
+		}
 
 		public void TEST()
 		{

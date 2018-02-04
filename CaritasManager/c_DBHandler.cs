@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 using System.Data.SQLite;
 
@@ -11,6 +12,8 @@ namespace CaritasManager
 {
 	public static class c_DBHandler
 	{
+		public static SHA512CryptoServiceProvider sha5 = new SHA512CryptoServiceProvider();
+
 		/// <summary>
 		/// Létrehozza a DB fájlt
 		/// </summary>
@@ -105,6 +108,35 @@ namespace CaritasManager
 											")";
 
 			sqlk.ExecuteNonQuery();
+
+			//------- Felhasználói Profilok
+
+			sqlk.CommandText = "CREATE TABLE password " +
+											"( " +
+												"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+												"password TEXT" +
+											"); INSERT INTO password (password) VALUES ('')";
+
+			sqlk.ExecuteNonQuery();
+
+
+			//------- Felhasználói Profilok
+
+			sqlk.CommandText = "CREATE TABLE profilok " +
+											"( " +
+												"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+												"profil_name INTEGER, " +
+												"last_login TEXT, " +
+												"font_family TEXT, " +
+												"font_size TEXT, " +
+												"font_style TEXT, " +
+												"font_color TEXT, " +
+												"color_1 TEXT, " + //zöld
+												"color_2 TEXT, " + //sárga
+												"color_3 TEXT  " + //piros
+											")";
+
+			sqlk.ExecuteNonQuery();
 		}
 
 
@@ -114,6 +146,51 @@ namespace CaritasManager
 			return sqlc;
 		}
 
+		public static void editPassword(SQLiteConnection sqlc, string password)
+		{
+			if(password.Length > 0)
+			{
+				string pwd = password;
+				byte[] bytes = Encoding.UTF8.GetBytes(pwd);
+				pwd = "";
+				foreach (byte b in sha5.ComputeHash(bytes))
+				{
+					pwd += b.ToString("X2");
+				}
+				SQLiteCommand sqlk = new SQLiteCommand("UPDATE password SET passwd='" + pwd + "'", sqlc);
+				sqlk.ExecuteNonQuery();
+			}
+		}
+
+		public static bool login(SQLiteConnection sqlc, string password)
+		{
+			bool ret = false;
+			string pwd = password;
+			byte[] bytes = Encoding.UTF8.GetBytes(pwd);
+			//pwd = Encoding.UTF8.GetString();
+			pwd = "";
+			foreach(byte b in sha5.ComputeHash(bytes))
+			{
+				pwd += b.ToString("X2");
+			}
+
+			SQLiteCommand sqlk = new SQLiteCommand("SELECT id FROM password WHERE passwd='" + pwd + "';" , sqlc);
+
+			ret = sqlk.ExecuteScalar() == null ? false : true;
+
+			return ret;
+		}
+
+		public static bool checkPassword(SQLiteConnection sqlc)
+		{
+			bool ret = false;
+
+			SQLiteCommand sqlk = new SQLiteCommand("SELECT passwd FROM password WHERE id=1;", sqlc);
+
+			ret = sqlk.ExecuteScalar().ToString() == "" ? false : true;
+
+			return ret;
+		}
 
 		#region Új Sor és Módosítás
 

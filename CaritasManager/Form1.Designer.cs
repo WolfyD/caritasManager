@@ -32,9 +32,10 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.ts_Tools = new System.Windows.Forms.ToolStrip();
 			this.btn_NewCustomer = new System.Windows.Forms.ToolStripButton();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.btn_Exit = new System.Windows.Forms.ToolStripButton();
+			this.btn_Settings = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.button1 = new System.Windows.Forms.Button();
 			this.dg_DataTable = new System.Windows.Forms.DataGridView();
 			this.ch_CustomerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ch_jovedelemig = new System.Windows.Forms.DataGridViewImageColumn();
@@ -44,9 +45,10 @@
 			this.ch_DateAdded = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ch_LastSupport = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ch_AddSupport = new System.Windows.Forms.DataGridViewButtonColumn();
-			this.button1 = new System.Windows.Forms.Button();
 			this.tt_Tooltip = new CaritasManager.uc_Tooltip();
 			this.t_Timer = new System.Windows.Forms.Timer(this.components);
+			this.btn_Exit = new System.Windows.Forms.ToolStripButton();
+			this.btn_DatabaseBackup = new System.Windows.Forms.ToolStripButton();
 			this.ts_Tools.SuspendLayout();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dg_DataTable)).BeginInit();
@@ -61,11 +63,13 @@
 			this.ts_Tools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btn_NewCustomer,
             this.btn_Exit,
+            this.btn_Settings,
+            this.btn_DatabaseBackup,
             this.toolStripButton1});
 			this.ts_Tools.Location = new System.Drawing.Point(0, 0);
 			this.ts_Tools.Name = "ts_Tools";
 			this.ts_Tools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-			this.ts_Tools.Size = new System.Drawing.Size(930, 50);
+			this.ts_Tools.Size = new System.Drawing.Size(1049, 50);
 			this.ts_Tools.TabIndex = 0;
 			this.ts_Tools.Text = "toolStrip1";
 			// 
@@ -78,24 +82,15 @@
 			this.btn_NewCustomer.Size = new System.Drawing.Size(133, 47);
 			this.btn_NewCustomer.Text = "Új Ügyfél";
 			// 
-			// panel1
+			// btn_Settings
 			// 
-			this.panel1.Controls.Add(this.button1);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(0, 402);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(930, 97);
-			this.panel1.TabIndex = 1;
-			// 
-			// btn_Exit
-			// 
-			this.btn_Exit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-			this.btn_Exit.Font = new System.Drawing.Font("Segoe UI", 14.25F);
-			this.btn_Exit.Image = ((System.Drawing.Image)(resources.GetObject("btn_Exit.Image")));
-			this.btn_Exit.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btn_Exit.Name = "btn_Exit";
-			this.btn_Exit.Size = new System.Drawing.Size(116, 47);
-			this.btn_Exit.Text = "Kilépés";
+			this.btn_Settings.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.btn_Settings.Font = new System.Drawing.Font("Segoe UI", 14.25F);
+			this.btn_Settings.Image = ((System.Drawing.Image)(resources.GetObject("btn_Settings.Image")));
+			this.btn_Settings.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btn_Settings.Name = "btn_Settings";
+			this.btn_Settings.Size = new System.Drawing.Size(146, 47);
+			this.btn_Settings.Text = "Beállítások";
 			// 
 			// toolStripButton1
 			// 
@@ -105,6 +100,25 @@
 			this.toolStripButton1.Name = "toolStripButton1";
 			this.toolStripButton1.Size = new System.Drawing.Size(232, 47);
 			this.toolStripButton1.Text = "Adatlap Szerkesztése";
+			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.button1);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.panel1.Location = new System.Drawing.Point(0, 402);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(1049, 97);
+			this.panel1.TabIndex = 1;
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(109, 58);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 0;
+			this.button1.Text = "button1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// dg_DataTable
 			// 
@@ -126,7 +140,7 @@
 			this.dg_DataTable.Name = "dg_DataTable";
 			this.dg_DataTable.ReadOnly = true;
 			this.dg_DataTable.RowHeadersVisible = false;
-			this.dg_DataTable.Size = new System.Drawing.Size(930, 352);
+			this.dg_DataTable.Size = new System.Drawing.Size(1049, 352);
 			this.dg_DataTable.TabIndex = 2;
 			this.dg_DataTable.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellMouseEnter);
 			this.dg_DataTable.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_DataTable_CellMouseLeave);
@@ -183,16 +197,6 @@
 			this.ch_AddSupport.Name = "ch_AddSupport";
 			this.ch_AddSupport.ReadOnly = true;
 			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(109, 58);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 0;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
-			// 
 			// tt_Tooltip
 			// 
 			this.tt_Tooltip.BackColor = System.Drawing.Color.LightYellow;
@@ -200,19 +204,41 @@
 			this.tt_Tooltip.font = null;
 			this.tt_Tooltip.Location = new System.Drawing.Point(-100, -100);
 			this.tt_Tooltip.Name = "tt_Tooltip";
+			this.tt_Tooltip.position = new System.Drawing.Point(0, 0);
 			this.tt_Tooltip.Size = new System.Drawing.Size(10, 10);
 			this.tt_Tooltip.TabIndex = 3;
 			this.tt_Tooltip.text = null;
+			this.tt_Tooltip.title = null;
 			// 
 			// t_Timer
 			// 
 			this.t_Timer.Tick += new System.EventHandler(this.t_Timer_Tick);
 			// 
+			// btn_Exit
+			// 
+			this.btn_Exit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.btn_Exit.Font = new System.Drawing.Font("Segoe UI", 14.25F);
+			this.btn_Exit.Image = ((System.Drawing.Image)(resources.GetObject("btn_Exit.Image")));
+			this.btn_Exit.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btn_Exit.Name = "btn_Exit";
+			this.btn_Exit.Size = new System.Drawing.Size(116, 47);
+			this.btn_Exit.Text = "Kilépés";
+			// 
+			// btn_DatabaseBackup
+			// 
+			this.btn_DatabaseBackup.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.btn_DatabaseBackup.Font = new System.Drawing.Font("Segoe UI", 14.25F);
+			this.btn_DatabaseBackup.Image = ((System.Drawing.Image)(resources.GetObject("btn_DatabaseBackup.Image")));
+			this.btn_DatabaseBackup.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btn_DatabaseBackup.Name = "btn_DatabaseBackup";
+			this.btn_DatabaseBackup.Size = new System.Drawing.Size(210, 47);
+			this.btn_DatabaseBackup.Text = "Biztonsági Mentés";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(930, 499);
+			this.ClientSize = new System.Drawing.Size(1049, 499);
 			this.Controls.Add(this.tt_Tooltip);
 			this.Controls.Add(this.dg_DataTable);
 			this.Controls.Add(this.panel1);
@@ -231,7 +257,7 @@
 
 		private System.Windows.Forms.ToolStrip ts_Tools;
 		private System.Windows.Forms.ToolStripButton btn_NewCustomer;
-		private System.Windows.Forms.ToolStripButton btn_Exit;
+		private System.Windows.Forms.ToolStripButton btn_Settings;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.ToolStripButton toolStripButton1;
 		private System.Windows.Forms.DataGridView dg_DataTable;
@@ -246,6 +272,8 @@
 		private System.Windows.Forms.Button button1;
 		private uc_Tooltip tt_Tooltip;
 		private System.Windows.Forms.Timer t_Timer;
+		private System.Windows.Forms.ToolStripButton btn_Exit;
+		private System.Windows.Forms.ToolStripButton btn_DatabaseBackup;
 	}
 }
 

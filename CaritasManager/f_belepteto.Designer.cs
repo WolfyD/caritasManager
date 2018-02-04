@@ -58,6 +58,7 @@
 			this.btn_NewProfile.TabIndex = 1;
 			this.btn_NewProfile.Text = "Új Profil";
 			this.btn_NewProfile.UseVisualStyleBackColor = true;
+			this.btn_NewProfile.Click += new System.EventHandler(this.btn_NewProfile_Click);
 			// 
 			// btn_Exit
 			// 

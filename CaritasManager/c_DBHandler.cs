@@ -33,6 +33,7 @@ namespace CaritasManager
 		{
 			//------- UGYFEL tábla
 			
+			//TODO: HOZZÁADTA oszlop
 			SQLiteCommand sqlk = new SQLiteCommand("CREATE TABLE ugyfel " + 
 															"(" + 
 																"id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
@@ -144,6 +145,85 @@ namespace CaritasManager
 		{
 			SQLiteConnection sqlc = new SQLiteConnection("Data Source=database.sqlite;Version=3;");
 			return sqlc;
+		}
+
+		public static string editProfile(SQLiteConnection sqlc, profile p, bool edit)
+		{
+			string command = string.Format("SELECT id FROM profilok WHERE lower(profil_name)='{0}'", p.name.ToLower());
+			SQLiteCommand sqlk = new SQLiteCommand(command, sqlc);
+
+			if (!edit)
+			{
+				if (sqlk.ExecuteScalar() == null)
+				{
+					command = string.Format("INSERT INTO profilok (profil_name,last_login,font_family,font_size,font_style,font_color,color_1,color_2,color_3) " + 
+											" VALUES " + 
+											" ("  +
+												"'{0}'," +
+												"'{1}'," +
+												"'{2}'," +
+												"'{3}'," +
+												"'{4}'," +
+												"'{5}'," +
+												"'{6}'," +
+												"'{7}'," +
+												"'{8}'" +
+											");",
+												p.name,
+												DateTime.Now.ToShortDateString(),
+												p.fontFamily,
+												p.fontSize,
+												p.fontStyle,
+												p.fontColor,
+												p.color_1,
+												p.color_2,
+												p.color_3
+											);
+
+					sqlk.CommandText = command;
+					sqlk.ExecuteNonQuery();
+
+				}
+				else
+				{
+					return "ERROR:0";
+				}
+			}
+			else
+			{
+				if (sqlk.ExecuteScalar() != null)
+				{
+					command = string.Format("UPDATE profilok SET " + 
+							" last_login='{0}', " +
+							" font_family='{1}', " +
+							" font_size='{2}'," +
+							" font_style='{3}'," +
+							" font_color='{4}'," +
+							" color_1='{5}'," +
+							" color_2='{6}'," +
+							" color_3='{7}'" +
+						" WHERE lower(profil_name) = '{8}';",
+							DateTime.Now.ToShortDateString(),
+							p.fontFamily,
+							p.fontSize,
+							p.fontStyle,
+							p.fontColor,
+							p.color_1,
+							p.color_2,
+							p.color_3,
+							p.name.ToLower()
+						);
+
+					sqlk.CommandText = command;
+					sqlk.ExecuteNonQuery();
+				}
+				else
+				{
+					return "ERROR:0";
+				}
+			}
+
+			return "";
 		}
 
 		public static void editPassword(SQLiteConnection sqlc, string password)
@@ -534,6 +614,18 @@ namespace CaritasManager
 
 
 
+	}
+
+	public class profile
+	{
+		public string name { get; set; }
+		public string fontFamily { get; set; }
+		public string fontSize { get; set; }
+		public string fontStyle { get; set; }
+		public string fontColor { get; set; }
+		public string color_1 { get; set; }
+		public string color_2 { get; set; }
+		public string color_3 { get; set; }
 	}
 
 }

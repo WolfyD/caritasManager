@@ -35,6 +35,8 @@ namespace CaritasManager
 				fe.sqlc = sqlc;
 				fe.ShowDialog();
 			}
+
+
 		}
 
 		private void btn_AllSeeingEye_Click(object sender, EventArgs e)
@@ -65,6 +67,14 @@ namespace CaritasManager
 				f.ShowDialog();
 				this.Show();
 			}
+		}
+
+		private void btn_NewProfile_Click(object sender, EventArgs e)
+		{
+			f_EditProfile ep = new f_EditProfile();
+			ep.sqlc = sqlc;
+			ep.edit = false;
+			ep.ShowDialog();
 		}
 	}
 }

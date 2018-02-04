@@ -99,6 +99,12 @@
     <Compile Include="f_EditPassword.Designer.cs">
       <DependentUpon>f_EditPassword.cs</DependentUpon>
     </Compile>
+    <Compile Include="f_EditProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="f_EditProfile.Designer.cs">
+      <DependentUpon>f_EditProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="uc_Tooltip.cs">
@@ -115,6 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="f_EditPassword.resx">
       <DependentUpon>f_EditPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="f_EditProfile.resx">
+      <DependentUpon>f_EditProfile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -45,12 +45,12 @@ namespace CaritasManager
 
 		public void TEST()
 		{
-			//c_DBHandler.createDBFile();
+			c_DBHandler.createDBFile();
 			sqlc = c_DBHandler.connectToDB();
 			sqlc.Open();
-			//c_DBHandler.createTables(sqlc);
+			c_DBHandler.createTables(sqlc);
 
-			//c_DBHandler.addRowToUgyfel(sqlc, "Pogány Dani", "Pogány Dani", "19988776BA", "Szekszárd", "Bada U. 3", "1766.10.12", "Buktabest", 0, "", "McDonalds Frittőzös", "Programozó", "", "", "2018.01.20", "0001", "2018.01.01", "T","OK");
+			c_DBHandler.addRowToUgyfel(sqlc, "Pogány Dani", "Pogány Dani", "19988776BA", "Szekszárd", "Bada U. 3", "1766.10.12", "Buktabest", 0, "", "McDonalds Frittőzös", "Programozó", "", "", "2018.01.20", "0001", "2018.01.01", "T","OK","Marika Néni");
 
 
 		}
